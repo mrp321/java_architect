@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="lesson_03_03_03" />
+        <module name="lesson_04_01_01" />
+        <module name="lesson_04_05_01" />
+        <module name="lesson_04_05_03" />
+        <module name="lesson_04_05_04_orderservice" />
+        <module name="lesson_04_05_04_reposervice" />
+        <module name="spicore" />
+        <module name="spitest" />
+        <module name="springbootannotation" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="8" />
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="lesson_03_03_03" options="" />
+      <module name="lesson_04_01_01" options="" />
+      <module name="lesson_04_05_01" options="" />
+      <module name="lesson_04_05_02" options="" />
+      <module name="lesson_04_05_03" options="" />
+      <module name="lesson_04_05_04_orderservice" options="" />
+      <module name="lesson_04_05_04_reposervice" options="" />
+      <module name="spicore" options="" />
+      <module name="spitest" options="" />
+      <module name="springbootannotation" options="" />
+    </option>
+  </component>
+</project>

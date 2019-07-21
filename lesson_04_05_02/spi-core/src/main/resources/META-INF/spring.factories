@@ -1,0 +1,2 @@
+# 启用自动装配的类
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=cn.sitedev.lesson.spi.SpiConfiguration

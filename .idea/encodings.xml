@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8" addBOMForNewFiles="with NO BOM">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lesson_03_03_03" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lesson_04_01_01" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lesson_04_05_01" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lesson_04_05_02" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lesson_04_05_02/spi-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lesson_04_05_02/spi-test" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lesson_04_05_02/springboot-annotation" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lesson_04_05_03" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lesson_04_05_04" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lesson_04_05_04/lesson_04_05_04_order-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/lesson_04_05_04/lesson_04_05_04_repo-service" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

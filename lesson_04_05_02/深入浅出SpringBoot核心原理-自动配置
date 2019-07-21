@@ -1,0 +1,173 @@
+### 1.基于你对springboot的理解描述一下什么是springboot
+
+SpringBoot是一个能够帮助开发者进行快速开发基于Spring应用的框架
+
+### 2.约定优于配置指的是什么？
+
+#### 2.1. 概念
+
+* 约定优于配置（Convention over Configuration），又称按约定编程，是一种软件设计范式。
+
+* 本质上是说，系统、类库或框架应该假定合理的默认值，而非要求提供不必要的配置。比如说模型中有一个名为User的类，那么数据库中对应的表就会默认命名为user。只有在偏离这一个约定的时候，例如想要将该表命名为loser，才需要写有关这个名字的配置。
+
+* 简单来说，如果你所用工具的约定和你的期待相符，就可以省去配置；不符合的话，你就要通过相关的配置来达到你所期待的方式
+
+* 一句话总结:按照一定的约定规范，来避免一些繁琐的配置
+
+#### 2.2. 体现
+
+* 主要体现在以下几点:
+
+
+##### 2.2.1. maven的目录结构
+
+* 默认由resouces文件夹存放配置文件
+
+* 默认打包方式为jar
+
+
+##### 2.2.2. spring-boot-starter-web默认包含spring mvc的相关依赖, 以及一个内嵌的tomcat容器, 能帮助简化web开发
+
+##### 2.2.3. 默认通过application.yml或application.properties来进行应用的相关配置
+
+##### 2.2.4. 默认通过`spring.profiles.active`属性来指定生效的配置
+
+##### 2.2.5. @EableAutoConfiguration注解默认对于依赖的starter进行自动装载
+
+### 3.@SpringBootApplication由哪几个注解组成，这几个注解分别表示什么作用
+
+* @SpringBootApplication由以下注解组成:
+
+```java
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@Inherited
+@SpringBootConfiguration
+@EnableAutoConfiguration
+@ComponentScan(excludeFilters = {
+		@Filter(type = FilterType.CUSTOM, classes = TypeExcludeFilter.class),
+		@Filter(type = FilterType.CUSTOM, classes = AutoConfigurationExcludeFilter.class) })
+public @interface SpringBootApplication {
+```
+
+
+* 各个注解的作用如下
+
+```
+@Target(ElementType.TYPE): 注解的作用目标, 其中ElementType.TYPE表示注解的作用目标为类/接口/枚举
+
+@Retention(RetentionPolicy.RUNTIME):注解的保留位置, 其中RetentionPolicy.RUNTIME表示注解会在class字节码文件中存在, 且运行时可以通过反射获取到
+
+@Documented:该注解将被包含在JavaDoc中
+
+@Inherited:子类可以继承父类的该注解
+
+@SpringBootConfiguration:当前类是一个SpringBoot的配置类
+
+@EnableAutoConfiguration:启用自动配置
+
+@ComponentScan:扫描当前包以及子包下的组件
+```
+
+
+### 4.springboot自动装配的实现原理
+
+#### 4.1. SpringBoot中通过`@EnableAutoConfiguration`来实现自动装配
+
+```java
+
+@EnableAutoConfiguration
+public @interface SpringBootApplication {
+```
+
+#### 4.2. `@EnableAutoConfiguration`注解通过`@Import`向容器中导入组件`AutoConfigurationImportSelector`
+
+```java
+@Import(AutoConfigurationImportSelector.class)
+public @interface EnableAutoConfiguration {
+```
+
+#### 4.3. `AutoConfigurationImportSelector`组件是基于`ImportSelector`来实现动态加载bean的功能的, 该组件中的`selectImports` 方法的返回值 即为向容器中注入的bean
+
+```java
+public class AutoConfigurationImportSelector
+		implements DeferredImportSelector, BeanClassLoaderAware, ResourceLoaderAware,
+		BeanFactoryAware, EnvironmentAware, Ordered {
+    
+    	@Override
+    	public String[] selectImports(AnnotationMetadata annotationMetadata) {
+    		if (!isEnabled(annotationMetadata)) {
+    			return NO_IMPORTS;
+    		}
+    		AutoConfigurationMetadata autoConfigurationMetadata = AutoConfigurationMetadataLoader
+    				.loadMetadata(this.beanClassLoader);
+    		AutoConfigurationEntry autoConfigurationEntry = getAutoConfigurationEntry(
+    				autoConfigurationMetadata, annotationMetadata);
+    		return StringUtils.toStringArray(autoConfigurationEntry.getConfigurations());
+    	}
+}
+```
+
+##### 4.3.1. 该方法首先会加载`META-INF/spring-autoconfigure-metadata.propertie`文件
+    
+```java
+            AutoConfigurationMetadata autoConfigurationMetadata = AutoConfigurationMetadataLoader
+                    .loadMetadata(this.beanClassLoader);
+```
+
+##### 4.3.2. 然后获取自动配置类的一个封装
+
+```java
+		AutoConfigurationEntry autoConfigurationEntry = getAutoConfigurationEntry(
+				autoConfigurationMetadata, annotationMetadata);
+```
+
+###### 4.3.2.1. 获取注解元数据
+
+```java
+		AnnotationAttributes attributes = getAttributes(annotationMetadata);
+```
+###### 4.3.2.2. 从`META-INF/spring.factories`中加载key为`org.springframework.boot.autoconfigure.EnableAutoConfiguration`的内容,存入configurations
+
+```java
+		List<String> configurations = getCandidateConfigurations(annotationMetadata,
+				attributes);
+```
+
+###### 4.3.2.3. 从configurations中移除重复的配置
+
+```java
+		configurations = removeDuplicates(configurations);
+```
+###### 4.3.2.4. 获取需要排除的bean.包含注解属性中的`exclude`, `excludeName`, 以及系统环境中 "spring.autoconfigure.exclude"的值, 存入exclusions
+
+```java
+		Set<String> exclusions = getExclusions(annotationMetadata, attributes);
+```
+###### 4.3.2.5. 检测是否包含无效的排除项.如果包含, 则抛出异常
+
+```java
+		checkExcludedClasses(configurations, exclusions);
+```
+###### 4.3.2.6. 从configurations中移除exclusions
+
+```java
+		configurations.removeAll(exclusions);
+```
+
+###### 4.3.2.7. 根据`META-INF/spring-autoconfigure-metadata.properties`文件中的配置过滤掉不满足的configurations
+
+```java
+		configurations = filter(configurations, autoConfigurationMetadata);
+```
+
+#### 4.3.3. 最后返回一个String数组, 该数组中的内容即为要注入容器中的bean的完全限定名
+
+```java
+		return StringUtils.toStringArray(autoConfigurationEntry.getConfigurations());
+```
+
+### 5.spring中的spi机制的原理是什么？
+
+* 在Spring中, 通过SpringFactoriesLoader 类从`META-INF/spring.factories`文件中读取指定key对应的内容, 来加载对应的类到spring容器中
