@@ -1,0 +1,301 @@
+# 1. Zookeeper的安装部署
+
+## 1.1. 安装
+
+zookeeper 有两种运行模式：集群模式和单机模式。
+
+下载 zookeeper 安装包：`http://apache.fayea.com/zookeeper/` 
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/a9270cf5-e20f-44dd-9a2f-7a343d6ece41.png)
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/52f718b7-8690-43f7-bd27-2376d8ab3533.png)
+
+下载完成，通过 `tar -zxvf` 解压
+
+常用命令
+1.  启动 ZK 服务:
+bin/zkServer.sh start
+2.  查看 ZK 服务状态:
+bin/zkServer.sh status
+3.  停止 ZK 服务:
+bin/zkServer.sh stop
+4.  重启 ZK 服务:
+bin/zkServer.sh restart
+5.  连接服务器
+zkCli.sh -timeout 0 -r -server   ip:port
+
+## 1.2. 单机环境安装(以Linux为例)
+
+一般情况下，在开发测试环境，没有这么多资源的情况下，而且也不需要特别好的稳定性的前提下，我们可以使用单机部署；
+
+初次使用 zookeeper，需要将 conf 目录下的 zoo_sample.cfg 文件 copy 一份重命名为 zoo.cfg
+
+修改 dataDir 目录，dataDir 表示日志文件存放的路径（关于 zoo.cfg 的其他配置信息后面会讲）
+
+
+### 1.2.1. 详细步骤演示
+
+**下载zookeeper-3.5.5**
+
+```
+[root@sitedev software]# wget http://apache.fayea.com/zookeeper/zookeeper-3.5.5/apache-zookeeper-3.5.5-bin.tar.gz
+```
+
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/f36d263b-a5b8-414b-87c6-5c45a6e43309.png)
+
+**解压缩**
+
+```
+# -C : 指定解压路径
+[root@sitedev software]# tar -zxvf apache-zookeeper-3.5.5-bin.tar.gz -C /opt/module
+```
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/0c34b03d-9e28-4fb2-a2c4-0a58c7550768.png)
+
+**修改配置文件**
+
+```
+# 切换到zookeeper目录
+[root@sitedev module]# cd apache-zookeeper-3.5.5-bin
+# 切换到 conf目录
+[root@sitedev apache-zookeeper-3.5.5-bin]# cd conf
+# 将zoo_sample.cfg复制一份重命名为zoo.cfg
+[root@sitedev conf]# cp zoo_sample.cfg zoo.cfg
+# 修改zoo.cfg
+[root@sitedev conf]# vim zoo.cfg
+# 修改的内容如下
+# dataDir=/opt/module/apache-zookeeper-3.5.5-bin
+
+```
+
+
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/9a7d468f-4254-4234-9fee-4312711141ce.png)
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/4be27629-a279-4d9b-bcfe-315e31f4bfdf.png)
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/35e7f69d-1fae-462a-a28c-5e4f48610ddf.png)
+
+**启动zookeeper服务端**
+
+```
+# 切换到bin目录下
+[root@sitedev conf]# cd ../bin
+# 启动zookeeper服务端
+[root@sitedev bin]# ./zkServer.sh start
+```
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/b1217f3a-851e-473b-8893-01511983ba19.png)
+
+**启动zookeeper客户端**
+
+```
+[root@sitedev bin]# ./zkCli.sh
+```
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/b194c68e-c0a7-48d4-bf7b-0a96feb60964.png)
+
+**尝试使用zooViewer连接到zookeeper**
+
+注意:如果连接不上, 请尝试关闭虚拟机的防火墙
+
+```
+[root@sitedev module]# systemctl stop firewalld
+```
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/10000e9b-8d14-4d1f-90f9-c832cd8f5073.png)
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/33ee5524-40e3-48a4-99b2-fd0f41e1a2b7.png)
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/bc622124-a019-43e5-a526-b0ad7becee88.png)
+
+
+
+## 1.3. 集群环境安装(以Linux为例)
+
+在 zookeeper 集群中，各个节点总共有三种角色，分别是：leader，follower，observer
+集群模式我们采用模拟 3 台机器来搭建 zookeeper 集群。分别复制安装包到三台机器上并解
+压，同时 copy 一份 zoo.cfg。
+
+### 1.3.1. 修改配置文件
+
+修改端口
+
+```
+server.1=IP1:2888:3888   【2888：访问 zookeeper 的端口； 3888：重新选举 leader 的端口】
+server.2=IP2:2888:3888
+server.3=IP3:2888:2888 
+```
+
+server.A=B：C：D：其  中
+
+```
+A  是一个数字，表示这个是第几号服务器；
+B  是这个服务器的  ip 地址；
+C  表示的是这个服务器与集群中的  Leader  服务器交换信息的端口；
+D  表示的是万一集群中的  Leader  服务器挂了，需要一个端口来重新进行选举，选出一个新的  Leader，而这个端口就是用来执行选举时服务器相互通信的端口。如果是伪集群的配置方式，由于  B  都是一样，所以不同的  Zookeeper  实际通信端口号不能一样，所以要给它们分配不同的端口号。
+```
+
+在集群模式下，集群中每台机器都需要感知到整个集群是由哪几台机器组成的，在配置文件中，按照格式 `server.id=host:port:port`，每一行代表一个机器配置
+
+id:  指的是 server ID,用来标识该机器在集群中的机器序号
+
+### 1.3.2. 新建 datadir 目录，设置 myid
+
+在每台 zookeeper 机器上，我们都需要在数据目录(dataDir)下创建一个 myid 文件，该文件
+只有一行内容，对应每台机器的 Server ID 数字；比如 server.1 的 myid 文件内容就是 1。【必须确保每个服务器的 myid 文件中的数字不同，并且和自己所在机器的 zoo.cfg 中 server.id
+的 id 值一致，id 的范围是 1~255】
+
+### 1.3.3. 详细步骤演示(伪集群)
+
+**分别复制三份zookeeper至指定路径下, 表示集群中的三台服务器**
+
+```
+[root@sitedev module]# cp -r  apache-zookeeper-3.5.5-bin  apache-zookeeper-3.5.5-bin2
+[root@sitedev module]# cp -r  apache-zookeeper-3.5.5-bin  apache-zookeeper-3.5.5-bin3
+```
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/781b1dca-d096-4805-975f-0445ffed8dc0.png)
+
+**修改第一个zookeeper中的配置文件zoo.cfg**
+
+```
+# 修改第一个zookeeper中的配置文件
+[root@sitedev apache-zookeeper-3.5.5-bin]# cd conf
+[root@sitedev conf]# vim zoo.cfg
+# 配置文件修改部分如下
+dataDir=/opt/module/apache-zookeeper-3.5.5-bin
+
+server.1=127.0.0.1:2888:3888
+server.2=127.0.0.1:2889:3889
+server.3=127.0.0.1:2890:3890
+```
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/93b0ab5d-3104-4790-af2d-f810672ae84d.png)
+
+**修改第二个zookeeper中的配置文件zoo.cfg**
+
+```
+# 将第一个zookeeper中的配置文件复制到第二个zookeeper中
+[root@sitedev conf]# cp zoo.cfg /opt/module/apache-zookeeper-3.5.5-bin2/conf
+# 修改配置文件
+[root@sitedev conf]# vim /opt/module/apache-zookeeper-3.5.5-bin2/conf/zoo.cfg
+# 配置文件修改部分如下
+dataDir=/opt/module/apache-zookeeper-3.5.5-bin2/dataDir
+
+clientPort=2182
+
+server.1=127.0.0.1:2888:3888
+server.2=127.0.0.1:2889:3889
+server.3=127.0.0.1:2890:3890
+
+```
+
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/9a127527-0c8a-4001-8c27-5ef227a776ca.png)
+
+**修改第三个zookeeper中的配置文件zoo.cfg**
+
+```
+# 将第一个zookeeper中的配置文件复制到第三个zookeeper中
+[root@sitedev conf]# cp zoo.cfg /opt/module/apache-zookeeper-3.5.5-bin3/conf
+# 修改配置文件
+[root@sitedev conf]# vim /opt/module/apache-zookeeper-3.5.5-bin3/conf/zoo.cfg
+# 配置文件修改部分如下
+dataDir=/opt/module/apache-zookeeper-3.5.5-bin3/dataDir
+
+clientPort=2183
+
+server.1=127.0.0.1:2888:3888
+server.2=127.0.0.1:2889:3889
+server.3=127.0.0.1:2890:3890
+```
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/045a8936-ede2-4db9-8831-b58b6143485d.png)
+
+**在第一个zookeeper的dataDir目录下创建myid**
+
+```
+[root@sitedev conf]# cd ..
+# 创建dataDir目录
+[root@sitedev apache-zookeeper-3.5.5-bin]# mkdir dataDir
+# 在dataDir下创建myid, 并写入1
+[root@sitedev apache-zookeeper-3.5.5-bin]# echo "1" >> dataDir/myid
+```
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/b7ccf321-a083-40da-a9f2-70c132b4b675.png)
+
+**在第二个zookeeper的dataDir目录下创建myid**
+
+```
+# 将第一个zookeeper中的dataDir复制到第二个zookeeper中
+[root@sitedev apache-zookeeper-3.5.5-bin]# cp -r dataDir /opt/module/apache-zookeeper-3.5.5-bin2
+# 第二个zookeeper的myid文件中写入2
+[root@sitedev apache-zookeeper-3.5.5-bin]# echo "2" > /opt/module/apache-zookeeper-3.5.5-bin2/dataDir/myid
+
+```
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/0bc79ff5-7d52-47f9-8eec-c121d3b742b1.png)
+
+**在第三个zookeeper的dataDir目录下创建myid**
+
+```
+# 将第一个zookeeper中的dataDir复制到第三个zookeeper中
+[root@sitedev apache-zookeeper-3.5.5-bin]# cp -r dataDir /opt/module/apache-zookeeper-3.5.5-bin3
+# 第三个zookeeper的myid文件中写入3
+[root@sitedev apache-zookeeper-3.5.5-bin]# echo "3" > /opt/module/apache-zookeeper-3.5.5-bin3/dataDir/myid
+
+```
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/41d67b6b-51e6-4760-a452-3c517ab5bbc1.png)
+
+
+**启动第一个zookeeper**
+
+```
+[root@sitedev apache-zookeeper-3.5.5-bin]# bin/zkServer.sh start
+```
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/127bc74b-d603-4362-bf34-945584244cc2.png)
+
+**启动第二个zookeeper**
+
+
+```
+[root@sitedev apache-zookeeper-3.5.5-bin]# /opt/module/apache-zookeeper-3.5.5-bin2/bin/zkServer.sh start
+```
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/5f007988-6103-4198-a734-a82141a1b45c.png)
+
+**启动第三个zookeeper**
+
+
+```
+[root@sitedev apache-zookeeper-3.5.5-bin]# /opt/module/apache-zookeeper-3.5.5-bin3/bin/zkServer.sh start
+```
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/6d5bac9f-9ce3-4875-9f31-9767bd8f6634.png)
+
+**使用zooViewer进行查看**
+
+![](http://vipkshttp1.wiz.cn/ks/share/resources/48b72e29-29a8-44aa-98fe-efd1ed56a782/df633a28-5fc2-443f-8dc4-e17d7f95a7fc/index_files/d6d23748-2aac-4d37-b388-6337e147b219.png)
+
+## 1.4. 启动 zookeeper
+
+**切换到zookeeper的`bin`目录下, 执行`./zkServer.sh start`**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
