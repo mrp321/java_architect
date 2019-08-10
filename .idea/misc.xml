@@ -8,6 +8,15 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/lesson_04_03_03/pom.xml" />
+        <option value="$PROJECT_DIR$/lesson_04_03_03/rpc-client/pom.xml" />
+        <option value="$PROJECT_DIR$/lesson_04_03_03/rpc-client-with-annotation/pom.xml" />
+        <option value="$PROJECT_DIR$/lesson_04_03_03/rpc-server/pom.xml" />
+        <option value="$PROJECT_DIR$/lesson_04_03_03/rpc-server-with-annotation/pom.xml" />
+        <option value="$PROJECT_DIR$/lesson_04_03_03/rpc-server/rpc-server-api/pom.xml" />
+        <option value="$PROJECT_DIR$/lesson_04_03_03/rpc-server/rpc-server-provider/pom.xml" />
+        <option value="$PROJECT_DIR$/lesson_04_03_03/rpc-server-with-annotation/rpc-server-api-with-annotation/pom.xml" />
+        <option value="$PROJECT_DIR$/lesson_04_03_03/rpc-server-with-annotation/rpc-server-provider-with-annotation/pom.xml" />
       </list>
     </option>
   </component>

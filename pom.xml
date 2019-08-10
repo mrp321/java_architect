@@ -11,10 +11,12 @@
     <modules>
         <module>lesson_03_03_03</module>
         <module>lesson_04_01_01</module>
+        <module>lesson_04_03_03</module>
         <module>lesson_04_05_01</module>
         <module>lesson_04_05_02</module>
         <module>lesson_04_05_03</module>
         <module>lesson_04_05_04</module>
+        <module>lesson_04_05_05</module>
     </modules>
     <build>
         <plugins>

@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="curatordemo" />
         <module name="formatspringbootstarter" />
         <module name="formatspringbootstarterdemo" />
         <module name="lesson_03_03_03" />
@@ -13,14 +14,31 @@
         <module name="lesson_04_05_01" />
         <module name="lesson_04_05_04_orderservice" />
         <module name="lesson_04_05_04_reposervice" />
+        <module name="myrpcapi" />
+        <module name="myrpcclient" />
+        <module name="myrpcserver" />
+        <module name="rpc-client" />
+        <module name="rpc-client-with-annotation" />
+        <module name="rpc-server-api" />
+        <module name="rpc-server-api-with-annotation" />
+        <module name="rpc-server-provider" />
+        <module name="rpc-server-provider-with-annotation" />
         <module name="spicore" />
         <module name="spitest" />
-        <module name="springbootannotation" />
+        <module name="springboot-annotation" />
         <module name="springbootstarteractuatordemo" />
         <module name="springbootstarterjdbcdemo" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="8" />
+    <bytecodeTargetLevel target="8">
+      <module name="rpcclient" target="1.8" />
+      <module name="rpcclientwithannotation" target="1.8" />
+      <module name="rpcserver" target="1.8" />
+      <module name="rpcserverapi" target="1.8" />
+      <module name="rpcserverprovider" target="1.8" />
+      <module name="rpcserverwithannotation" target="1.8" />
+      <module name="springbootannotation" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
